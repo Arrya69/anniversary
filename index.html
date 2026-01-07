@@ -13,6 +13,7 @@ body{
   font-family:'Poppins',sans-serif;
   overflow:hidden;
   background:#000;
+  touch-action:pan-y;
 }
 
 /* SLIDES */
@@ -23,36 +24,49 @@ body{
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  background:#000;
-  color:#fff;
   opacity:0;
   pointer-events:none;
-  transition:opacity 1s ease, transform 1s ease;
+  transition:opacity 1s ease, transform 1s cubic-bezier(.4,0,.2,1);
 }
 .slide.active{
   opacity:1;
   pointer-events:auto;
   transform:translateX(0);
 }
-.slide.left{transform:translateX(-40px)}
-.slide.right{transform:translateX(40px)}
+.slide.left{transform:translateX(-50px)}
+.slide.right{transform:translateX(50px)}
 
 /* BUTTON */
 .btn{
   margin-top:30px;
-  padding:14px 32px;
+  padding:14px 34px;
   border:none;
   border-radius:40px;
   font-size:16px;
   background:#ff6f91;
   color:#fff;
   cursor:pointer;
-  box-shadow:0 10px 30px rgba(255,111,145,.4);
+  box-shadow:0 12px 35px rgba(255,111,145,.45);
+}
+
+/* MUSIC */
+#musicBtn{
+  position:fixed;
+  top:20px;right:20px;
+  width:44px;height:44px;
+  border-radius:50%;
+  background:#ff6f91;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:99;
 }
 
 /* LOCK */
-#lock img{width:260px;border-radius:24px}
-#timer{margin-top:15px;font-size:18px}
+#lock{background:#111;color:#fff}
+#lock img{width:260px;border-radius:26px}
 
 /* MENU */
 #menu{
@@ -61,55 +75,49 @@ body{
 }
 .menu{
   display:grid;
-  grid-template-columns:repeat(2,180px);
+  grid-template-columns:repeat(2,200px);
   gap:40px;
   margin-top:40px;
 }
 .card{
-  background:rgba(255,255,255,.35);
-  backdrop-filter:blur(10px);
-  border-radius:26px;
-  padding:25px;
+  background:rgba(255,255,255,.4);
+  backdrop-filter:blur(12px);
+  border-radius:30px;
+  padding:30px;
   text-align:center;
   cursor:pointer;
-  transition:.4s;
+  transition:.5s;
 }
-.card:hover{transform:scale(1.08)}
-.card img{width:90px;margin-bottom:12px}
-.card h3{font-weight:600}
+.card:hover{transform:scale(1.1)}
+.card img{width:100px;margin-bottom:14px}
 
 /* GALLERY */
-#gallery{background:#111}
+#gallery{background:#111;color:#fff}
 .gallery{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:20px;
+  gap:22px;
   padding:30px;
 }
 .gallery img{
   width:100%;
-  border-radius:20px;
+  border-radius:22px;
   cursor:pointer;
   transition:.4s;
 }
-.gallery img:hover{transform:scale(1.05)}
-.caption{margin-top:15px;color:#ffd1dc}
 
 /* FLOWERS */
-#flowers{
-  background:#0d0d0d;
-  overflow:hidden;
-}
+#flowers{background:#0d0d0d;color:#fff;overflow:hidden}
 .petal{
   position:absolute;
-  width:20px;height:20px;
+  width:18px;height:18px;
   background:pink;
   border-radius:50%;
   animation:fall linear infinite;
 }
 @keyframes fall{
-  from{transform:translateY(-50px)}
-  to{transform:translateY(110vh)}
+  from{transform:translateY(-40px) rotate(0deg)}
+  to{transform:translateY(110vh) rotate(360deg)}
 }
 
 /* LETTER */
@@ -118,20 +126,21 @@ body{
   color:#3b2a1a;
 }
 .paper{
-  background:rgba(255,255,255,.85);
-  padding:40px;
-  border-radius:26px;
-  max-width:650px;
+  background:rgba(255,255,255,.88);
+  padding:42px;
+  border-radius:30px;
+  max-width:680px;
   font-family:'Playfair Display',serif;
-  font-size:20px;
-  line-height:1.6;
+  font-size:21px;
+  line-height:1.7;
 }
 
 /* VIDEO */
+#video{background:#000;color:#fff}
 #video video{
   width:320px;
-  border-radius:20px;
-  box-shadow:0 20px 50px rgba(0,0,0,.6);
+  border-radius:22px;
+  box-shadow:0 25px 60px rgba(0,0,0,.7);
 }
 
 /* FINAL */
@@ -141,27 +150,24 @@ body{
 }
 #final img{
   width:220px;
-  border-radius:20px;
-  margin:10px;
+  border-radius:22px;
+  margin:12px;
 }
 </style>
 </head>
 
 <body>
 
+<div id="musicBtn">🔊</div>
+<audio id="bgm" loop>
+  <source src="images/music.mp3" type="audio/mpeg">
+</audio>
+
 <!-- LOCK -->
 <div class="slide active" id="lock">
   <img src="images/cat-lock.jpg">
-  <h2>Don’t open yet 😾</h2>
-  <div id="timer"></div>
-  <button class="btn" onclick="attemptOpen()">Open</button>
-</div>
-
-<!-- WARNING -->
-<div class="slide left" id="warn">
-  <img src="images/cat-warning.jpg" style="width:240px;border-radius:20px">
-  <h2>How dare you 😤</h2>
-  <button class="btn" onclick="showSlide('lock')">Sorry</button>
+  <h2>Wait 😾</h2>
+  <button class="btn" onclick="openMenu()">Open</button>
 </div>
 
 <!-- MENU -->
@@ -186,18 +192,17 @@ body{
 <!-- GALLERY -->
 <div class="slide left" id="gallery">
   <div class="gallery">
-    <img src="images/photo1.jpg" onclick="cap('My favourite smile ❤️')">
-    <img src="images/photo2.jpg" onclick="cap('My comfort 💕')">
-    <img src="images/photo3.jpg" onclick="cap('My person 🫶')">
-    <img src="images/photo4.jpg" onclick="cap('Always us 🥺')">
+    <img src="images/photo1.jpg">
+    <img src="images/photo2.jpg">
+    <img src="images/photo3.jpg">
+    <img src="images/photo4.jpg">
   </div>
-  <div class="caption" id="cap"></div>
   <button class="btn" onclick="showSlide('menu')">Back</button>
 </div>
 
 <!-- FLOWERS -->
 <div class="slide right" id="flowers">
-  <h2>Flowers just for you 🌸</h2>
+  <h2>These are for you 🌸</h2>
   <button class="btn" onclick="showSlide('menu')">Back</button>
 </div>
 
@@ -205,8 +210,8 @@ body{
 <div class="slide left" id="letter">
   <div class="paper">
     One year with you felt like a heartbeat and a lifetime.<br><br>
-    You are my calm, my chaos, my comfort and my home.<br>
-    I choose you — always. ❤️
+    You are my calm, my chaos, my comfort, and my home.<br><br>
+    I choose you — always ❤️
   </div>
   <button class="btn" onclick="showSlide('menu')">Back</button>
 </div>
@@ -223,42 +228,63 @@ body{
 <div class="slide left" id="final">
   <img src="images/photo-last-1.jpg">
   <img src="images/photo-last-2.jpg">
-  <h1>Love you fodu ❤️</h1>
+  <h1>Love you ❤️</h1>
 </div>
 
 <script>
-const unlockDate = new Date().getTime(); // TEST MODE
-
-function attemptOpen(){
-  if(Date.now()<unlockDate) showSlide('warn');
-  else showSlide('menu');
-}
+let current="lock";
+let music=false;
+const bgm=document.getElementById("bgm");
 
 function showSlide(id){
-  document.querySelectorAll('.slide').forEach(s=>{
-    s.classList.remove('active')
-  });
+  document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  current=id;
+  if(id==="menu"||id==="final") hearts();
 }
 
-function cap(t){document.getElementById('cap').innerText=t}
+function openMenu(){
+  if(!music){bgm.play();music=true;}
+  showSlide('menu');
+}
+
+document.getElementById("musicBtn").onclick=()=>{
+  music?bgm.pause():bgm.play();
+  music=!music;
+};
 
 function openFlowers(){
   showSlide('flowers');
-  for(let i=0;i<30;i++){
+  for(let i=0;i<40;i++){
     let p=document.createElement('div');
     p.className='petal';
     p.style.left=Math.random()*100+'vw';
-    p.style.animationDuration=5+Math.random()*6+'s';
+    p.style.animationDuration=5+Math.random()*5+'s';
     document.body.appendChild(p);
   }
 }
 
-setInterval(()=>{
-  let diff=unlockDate-Date.now();
-  document.getElementById('timer').innerText=
-    diff<=0?'Unlocked ❤️':Math.ceil(diff/1000)+' sec';
-},1000);
+function hearts(){
+  for(let i=0;i<25;i++){
+    let h=document.createElement("div");
+    h.innerText="❤️";
+    h.style.position="fixed";
+    h.style.left=Math.random()*100+"vw";
+    h.style.top="-20px";
+    h.style.fontSize="20px";
+    h.style.animation="fall 4s linear";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),4000);
+  }
+} 
+
+/* SWIPE */
+let startX=0;
+document.addEventListener("touchstart",e=>startX=e.touches[0].clientX);
+document.addEventListener("touchend",e=>{
+  let dx=e.changedTouches[0].clientX-startX;
+  if(dx>80) showSlide('menu');
+});
 </script>
 
 </body>
