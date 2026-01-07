@@ -2,301 +2,182 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For You ❤️</title>
+<title>For My Love ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-    font-family:'Poppins',sans-serif;
-    overflow:hidden;
-} 
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif;}
+body{background:#000;color:#fff;overflow:hidden;}
+section{display:none;align-items:center;justify-content:center;flex-direction:column;height:100vh;width:100vw;position:absolute;top:0;left:0;}
+.show{display:flex;}
+.fade{animation:fade 1.2s ease;}
+@keyframes fade{from{opacity:0}to{opacity:1}}
 
-/* ================= LOCK SCREEN ================= */
-#lockScreen{
-    position:fixed;
-    inset:0;
-    background:linear-gradient(135deg,#111,#000);
-    color:#fff;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
-    text-align:center;
-}
-#lockScreen img{
-    width:220px;
-    border-radius:20px;
-    margin-bottom:20px;
-}
-#lockScreen button{
-    padding:12px 25px;
-    border:none;
-    border-radius:25px;
-    background:#ff6b81;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-    margin-top:15px;
-}
-#countdown{
-    font-size:22px;
-    margin-top:10px;
-}
+button{padding:12px 24px;border:none;border-radius:30px;font-size:16px;cursor:pointer;background:#ff6fae;color:#fff;box-shadow:0 0 15px #ff6fae;}
 
-/* ================= WARNING POPUP ================= */
-#warning{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.85);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:10000;
-}
-#warning .box{
-    background:#fff;
-    padding:25px;
-    border-radius:20px;
-    text-align:center;
-}
-#warning img{
-    width:200px;
-    border-radius:20px;
-}
+img{max-width:90%;border-radius:20px}
 
-/* ================= MAIN SITE ================= */
-main{
-    display:none;
-    background:url("images/letter-bg.jpg") center/cover fixed;
-    min-height:100vh;
-    padding:40px;
-}
+/* LOCK */
+#lock img{width:260px;margin-bottom:20px}
+#timer{font-size:22px;margin-top:10px}
 
-section{
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-}
+/* MENU */
+.menu{display:grid;grid-template-columns:repeat(2,150px);gap:30px}
+.menu img{width:120px;cursor:pointer;transition:.3s}
+.menu img:hover{transform:scale(1.15)}
 
-/* ================= INTRO ================= */
-#intro{
-    background:linear-gradient(135deg,#ff9a9e,#fad0c4);
-}
-#intro h1{font-size:36px}
+/* GALLERY */
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:20px;padding:20px}
+.gallery img{width:100%;cursor:pointer}
+.caption{margin-top:10px;font-size:16px;color:#ffd1e8}
 
-/* ================= GRID ================= */
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:20px;
-    max-width:900px;
-    width:100%;
-}
-.card{
-    background:rgba(255,255,255,0.15);
-    backdrop-filter:blur(10px);
-    padding:20px;
-    border-radius:20px;
-    cursor:pointer;
-    transition:0.3s;
-}
-.card:hover{transform:scale(1.05)}
-.card img{width:100px}
-
-/* ================= MODALS ================= */
-.modal{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.8);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:2000;
-}
-.modal-content{
-    background:#fff;
-    padding:20px;
-    border-radius:20px;
-    max-width:90%;
-    text-align:center;
-}
-.modal-content img, video{
-    max-width:100%;
-    border-radius:15px;
-}
-
-/* ================= GALLERY ================= */
-.gallery{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-    gap:15px;
-}
-
-/* ================= LETTER ================= */
+/* LETTER */
 #letter{
-    font-family:'Great Vibes',cursive;
-    font-size:28px;
-    max-width:800px;
+background:url("images/letter-bg.jpg") center/cover no-repeat;
+color:#3b2a1a;
+padding:40px;
+text-align:center;
+}
+#letter .paper{
+background:rgba(255,255,255,0.85);
+padding:30px;
+border-radius:20px;
+max-width:600px;
 }
 
-/* ================= FINAL ================= */
-#final img{
-    width:220px;
-    border-radius:20px;
-    margin:10px;
+/* FLOWERS */
+.petal{
+position:absolute;
+width:25px;
+height:25px;
+background:pink;
+border-radius:50%;
+opacity:.8;
+animation:fall linear infinite;
 }
-#final h1{margin-top:20px}
-
+@keyframes fall{
+from{transform:translateY(-50px)}
+to{transform:translateY(110vh)}
+}
 </style>
 </head>
+
 <body>
 
-<!-- LOCK SCREEN -->
-<div id="lockScreen">
-    <img src="images/cat-lock.jpg">
-    <h2>Don’t dare to open 😼</h2>
-    <div id="countdown"></div>
-    <button onclick="tryOpen()">Open Anyway</button>
-</div>
+<!-- LOCK -->
+<section id="lock" class="show fade">
+<img src="images/cat-lock.jpg">
+<h2>Don’t you dare open 😾</h2>
+<div id="timer"></div>
+<button onclick="tryOpen()">OPEN</button>
+</section>
 
 <!-- WARNING -->
-<div id="warning">
-    <div class="box">
-        <img src="images/cat-warning.jpg">
-        <h3>HOW DARE YOU OPEN IT 😾</h3>
-        <button onclick="closeWarning()">I’ll wait 😭</button>
-    </div>
-</div>
-
-<!-- MAIN -->
-<main id="site">
-
-<section id="intro">
-    <h1>I’ve got something for you 💖</h1>
+<section id="warning" class="fade">
+<img src="images/cat-warning.jpg">
+<h2>HOW DARE YOU 😤</h2>
+<button onclick="backToLock()">Okay sorry</button>
 </section>
 
-<section>
-    <div class="grid">
-        <div class="card" onclick="openPhotos()">
-            <img src="images/camera-logo.png">
-            <p>Photos 📸</p>
-        </div>
-        <div class="card" onclick="openFlowers()">
-            <img src="images/flower-logo.png">
-            <p>Flowers 🌸</p>
-        </div>
-        <div class="card" onclick="openLetter()">
-            <p>Letter 💌</p>
-        </div>
-        <div class="card" onclick="openVideo()">
-            <p>Video 🎥</p>
-        </div>
-    </div>
+<!-- MENU -->
+<section id="menu" class="fade">
+<h2>I’ve got something for you 💖</h2>
+<div class="menu">
+<img src="images/photo1.jpg" onclick="openGallery()">
+<img src="images/flower-logo.jpg" onclick="openFlowers()">
+<img src="images/letter-bg.jpg" onclick="openLetter()">
+<img src="images/photo2.jpg" onclick="openVideo()">
+</div>
 </section>
 
-<section id="final">
-    <img src="images/photo-last-1.jpg">
-    <img src="images/photo-last-2.jpg">
-    <h1>Love you, fodu ❤️</h1>
+<!-- GALLERY -->
+<section id="gallery" class="fade">
+<div class="gallery">
+<img src="images/photo1.jpg" onclick="showCaption('My favourite smile ❤️')">
+<img src="images/photo2.jpg" onclick="showCaption('You make my world soft 💕')">
+<img src="images/photo3.jpg" onclick="showCaption('Forever my person 🫶')">
+<img src="images/photo4.jpg" onclick="showCaption('I love us 🥺')">
+</div>
+<div class="caption" id="caption"></div>
+<button onclick="goMenu()">Back</button>
 </section>
 
-</main>
+<!-- FLOWERS -->
+<section id="flowers" class="fade">
+<h2>These will never die 🌸</h2>
+<button onclick="goMenu()">Back</button>
+</section>
 
-<!-- MODALS -->
-<div class="modal" id="photoModal">
-    <div class="modal-content">
-        <div class="gallery">
-            <img src="images/photo1.jpg" onclick="showPhoto(this,'My favorite smile 🥹')">
-            <img src="images/photo2.jpg" onclick="showPhoto(this,'Us. Always 💖')">
-            <img src="images/photo3.jpg" onclick="showPhoto(this,'This moment lives in my heart')">
-            <img src="images/photo4.jpg" onclick="showPhoto(this,'I love this memory')">
-        </div>
-    </div>
+<!-- LETTER -->
+<section id="letter" class="fade">
+<div class="paper">
+<h2>My Love 💌</h2>
+<p>
+One year with you felt like a heartbeat and a lifetime together.<br><br>
+You are my calm, my chaos, my comfort and my courage.<br>
+No matter where life takes us, I choose you — again and again.<br><br>
+Happy Anniversary ❤️
+</p>
 </div>
+<button onclick="goMenu()">Back</button>
+</section>
 
-<div class="modal" id="viewer">
-    <div class="modal-content">
-        <img id="viewImg">
-        <p id="viewText"></p>
-        <button onclick="closeViewer()">Close</button>
-    </div>
-</div>
+<!-- VIDEO -->
+<section id="video" class="fade">
+<video controls width="300">
+<source src="images/video.mp4" type="video/mp4">
+</video>
+<button onclick="finalSlide()">Next</button>
+</section>
 
-<div class="modal" id="letterModal">
-    <div class="modal-content">
-        <div id="letter">
-            My love,<br><br>
-            Loving you feels like home.<br>
-            Thank you for choosing me,<br>
-            understanding me,<br>
-            and being my forever.<br><br>
-            Yours, always 🤍
-        </div>
-        <button onclick="closeLetter()">Close</button>
-    </div>
-</div>
-
-<div class="modal" id="videoModal">
-    <div class="modal-content">
-        <video controls>
-            <source src="images/video.mp4" type="video/mp4">
-        </video>
-        <button onclick="closeVideo()">Close</button>
-    </div>
-</div>
+<!-- FINAL -->
+<section id="final" class="fade">
+<img src="images/photo-last-1.jpg">
+<img src="images/photo-last-2.jpg">
+<h1>Love you fodu ❤️</h1>
+</section>
 
 <script>
-const unlockDate=new Date("2026-01-06T23:59:00").getTime();
+const unlockDate = new Date().getTime(); // TESTING (change later)
 
-
-function updateCountdown(){
-    const now=new Date().getTime();
-    const diff=unlockDate-now;
-    if(diff<=0){
-        document.getElementById("lockScreen").style.display="none";
-        document.getElementById("site").style.display="block";
-        document.body.style.overflow="auto";
-        return;
-    }
-    const d=Math.floor(diff/86400000);
-    const h=Math.floor(diff/3600000)%24;
-    const m=Math.floor(diff/60000)%60;
-    const s=Math.floor(diff/1000)%60;
-    countdown.innerText=`${d}d ${h}h ${m}m ${s}s`;
+function updateTimer(){
+const now = new Date().getTime();
+const diff = unlockDate - now;
+document.getElementById("timer").innerText =
+diff<=0 ? "Unlocked ❤️" : Math.ceil(diff/1000)+" seconds";
 }
-setInterval(updateCountdown,1000);
-updateCountdown();
+setInterval(updateTimer,1000);
 
 function tryOpen(){
-    document.getElementById("warning").style.display="flex";
+if(new Date().getTime()<unlockDate){
+show("warning");
+}else{
+show("menu");
 }
-function closeWarning(){
-    document.getElementById("warning").style.display="none";
 }
+function backToLock(){show("lock")}
+function openGallery(){show("gallery")}
+function openFlowers(){
+show("flowers");
+for(let i=0;i<25;i++){
+let p=document.createElement("div");
+p.className="petal";
+p.style.left=Math.random()*100+"vw";
+p.style.animationDuration=5+Math.random()*5+"s";
+document.body.appendChild(p);
+}
+}
+function openLetter(){show("letter")}
+function openVideo(){show("video")}
+function finalSlide(){show("final")}
+function goMenu(){show("menu")}
+function showCaption(t){document.getElementById("caption").innerText=t}
 
-function openPhotos(){photoModal.style.display="flex"}
-function openFlowers(){alert("Flowers bloom here 🌸")}
-function openLetter(){letterModal.style.display="flex"}
-function openVideo(){videoModal.style.display="flex"}
-
-function showPhoto(img,text){
-    viewImg.src=img.src;
-    viewText.innerText=text;
-    viewer.style.display="flex";
+function show(id){
+document.querySelectorAll("section").forEach(s=>s.style.display="none");
+document.getElementById(id).style.display="flex";
 }
-function closeViewer(){viewer.style.display="none"}
-function closeLetter(){letterModal.style.display="none"}
-function closeVideo(){videoModal.style.display="none"}
 </script>
 
 </body>
 </html>
-
