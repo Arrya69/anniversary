@@ -11,9 +11,8 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{
   font-family:'Poppins',sans-serif;
-  overflow:hidden;
   background:#000;
-  touch-action:pan-y;
+  overflow:hidden;
 }
 
 /* SLIDES */
@@ -26,20 +25,20 @@ body{
   align-items:center;
   opacity:0;
   pointer-events:none;
-  transition:opacity 1s ease, transform 1s cubic-bezier(.4,0,.2,1);
+  transition:opacity 1s ease, transform 1s ease;
 }
 .slide.active{
   opacity:1;
   pointer-events:auto;
   transform:translateX(0);
 }
-.slide.left{transform:translateX(-50px)}
-.slide.right{transform:translateX(50px)}
+.left{transform:translateX(-50px)}
+.right{transform:translateX(50px)}
 
 /* BUTTON */
 .btn{
   margin-top:30px;
-  padding:14px 34px;
+  padding:14px 36px;
   border:none;
   border-radius:40px;
   font-size:16px;
@@ -65,13 +64,18 @@ body{
 }
 
 /* LOCK */
-#lock{background:#111;color:#fff}
-#lock img{width:260px;border-radius:26px}
+#lock{
+  background:#111;
+  color:#fff;
+}
+#lock img{
+  width:260px;
+  border-radius:26px;
+}
 
 /* MENU */
 #menu{
   background:linear-gradient(135deg,#ffd1dc,#ffb6c1);
-  color:#222;
 }
 .menu{
   display:grid;
@@ -80,19 +84,25 @@ body{
   margin-top:40px;
 }
 .card{
-  background:rgba(255,255,255,.4);
-  backdrop-filter:blur(12px);
-  border-radius:30px;
+  background:rgba(255,255,255,.45);
+  backdrop-filter:blur(14px);
+  border-radius:32px;
   padding:30px;
   text-align:center;
   cursor:pointer;
-  transition:.5s;
+  transition:.6s ease;
 }
-.card:hover{transform:scale(1.1)}
-.card img{width:100px;margin-bottom:14px}
+.card:hover{
+  transform:translateY(-10px) scale(1.05);
+  box-shadow:0 25px 60px rgba(0,0,0,.25);
+}
+.card img{
+  width:100px;
+  margin-bottom:12px;
+}
 
 /* GALLERY */
-#gallery{background:#111;color:#fff}
+#gallery{background:#0b0b0b;color:#fff}
 .gallery{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
@@ -102,20 +112,25 @@ body{
 .gallery img{
   width:100%;
   border-radius:22px;
-  cursor:pointer;
-  transition:.4s;
 }
 
 /* FLOWERS */
-#flowers{background:#0d0d0d;color:#fff;overflow:hidden}
-.petal{
-  position:absolute;
-  width:18px;height:18px;
-  background:pink;
-  border-radius:50%;
-  animation:fall linear infinite;
+#flowers{
+  background:#0d0d0d;
+  color:#fff;
 }
-@keyframes fall{
+.petal{
+  position:fixed;
+  top:-40px;
+  width:26px;
+  height:26px;
+  background:radial-gradient(circle at 30% 30%, #ffd1dc, #ff8fab);
+  border-radius:50% 50% 50% 0;
+  transform:rotate(45deg);
+  opacity:.85;
+  animation:floatDown linear infinite;
+}
+@keyframes floatDown{
   from{transform:translateY(-40px) rotate(0deg)}
   to{transform:translateY(110vh) rotate(360deg)}
 }
@@ -123,22 +138,25 @@ body{
 /* LETTER */
 #letter{
   background:url("images/letter-bg.jpg") center/cover no-repeat;
-  color:#3b2a1a;
 }
 .paper{
-  background:rgba(255,255,255,.88);
-  padding:42px;
-  border-radius:30px;
-  max-width:680px;
+  background:rgba(255,255,255,.92);
+  padding:55px;
+  border-radius:34px;
+  max-width:760px;
   font-family:'Playfair Display',serif;
-  font-size:21px;
-  line-height:1.7;
+  font-size:24px;
+  line-height:1.9;
+  color:#3b2a1a;
 }
 
 /* VIDEO */
-#video{background:#000;color:#fff}
+#video{
+  background:#000;
+  color:#fff;
+}
 #video video{
-  width:320px;
+  width:340px;
   border-radius:22px;
   box-shadow:0 25px 60px rgba(0,0,0,.7);
 }
@@ -146,7 +164,6 @@ body{
 /* FINAL */
 #final{
   background:linear-gradient(135deg,#ffb6c1,#ffd1dc);
-  color:#222;
 }
 #final img{
   width:220px;
@@ -166,7 +183,7 @@ body{
 <!-- LOCK -->
 <div class="slide active" id="lock">
   <img src="images/cat-lock.jpg">
-  <h2>Wait 😾</h2>
+  <h2>Don’t open yet 😾</h2>
   <button class="btn" onclick="openMenu()">Open</button>
 </div>
 
@@ -175,16 +192,20 @@ body{
   <h1>I’ve got something for you 💖</h1>
   <div class="menu">
     <div class="card" onclick="showSlide('gallery')">
-      <img src="images/photo1.jpg"><h3>Photos</h3>
+      <img src="images/photo1.jpg">
+      <h3>Photos</h3>
     </div>
     <div class="card" onclick="openFlowers()">
-      <img src="images/flower-logo.jpg"><h3>Flowers</h3>
+      <img src="images/flower-logo.jpg">
+      <h3>Flowers</h3>
     </div>
     <div class="card" onclick="showSlide('letter')">
-      <img src="images/letter-bg.jpg"><h3>Letter</h3>
+      <img src="images/letter-bg.jpg">
+      <h3>Letter</h3>
     </div>
     <div class="card" onclick="showSlide('video')">
-      <img src="images/photo2.jpg"><h3>Video</h3>
+      <img src="images/photo2.jpg">
+      <h3>Video</h3>
     </div>
   </div>
 </div>
@@ -202,23 +223,33 @@ body{
 
 <!-- FLOWERS -->
 <div class="slide right" id="flowers">
-  <h2>These are for you 🌸</h2>
+  <h2>These flowers are for you 🌸</h2>
   <button class="btn" onclick="showSlide('menu')">Back</button>
 </div>
 
 <!-- LETTER -->
 <div class="slide left" id="letter">
   <div class="paper">
-    One year with you felt like a heartbeat and a lifetime.<br><br>
-    You are my calm, my chaos, my comfort, and my home.<br><br>
-    I choose you — always ❤️
+My Love,<br><br>
+
+It’s hard to believe how quickly time has passed, yet how deeply every moment with you has settled into my heart. One year with you feels like a blink and a lifetime at the same time. From the smallest conversations to the quiet moments we share, everything about us has become something I treasure more than I ever expected.<br><br>
+
+You walked into my life and slowly turned ordinary days into something meaningful. With you, even silence feels comforting. Your presence has a way of calming my chaos, lifting my mood, and reminding me that I’m never alone. You have been my safe place, my laughter after long days, and my reason to smile without even realizing it.<br><br>
+
+Thank you for choosing me — not just once, but every single day. Thank you for your patience, your understanding, and the love you give so effortlessly. Thank you for believing in us, even when things aren’t perfect. Loving you has taught me what it truly means to care for someone with your whole heart.<br><br>
+
+No matter where life takes us next, I want to face it with you by my side. Through every high and every low, I choose you — today, tomorrow, and always. You are not just a part of my life; you are my home.<br><br>
+
+Always yours,<br>
+With all my love 🤍
   </div>
   <button class="btn" onclick="showSlide('menu')">Back</button>
 </div>
 
 <!-- VIDEO -->
 <div class="slide right" id="video">
-  <video controls>
+  <h2 style="margin-bottom:20px">Us 💞</h2>
+  <video controls preload="metadata" poster="images/photo1.jpg">
     <source src="images/video.mp4" type="video/mp4">
   </video>
   <button class="btn" onclick="showSlide('final')">Next</button>
@@ -228,19 +259,16 @@ body{
 <div class="slide left" id="final">
   <img src="images/photo-last-1.jpg">
   <img src="images/photo-last-2.jpg">
-  <h1>Love you ❤️</h1>
+  <h1 style="margin-top:20px">Love you phodu ❤️</h1>
 </div>
 
 <script>
-let current="lock";
 let music=false;
 const bgm=document.getElementById("bgm");
 
 function showSlide(id){
   document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  current=id;
-  if(id==="menu"||id==="final") hearts();
 }
 
 function openMenu(){
@@ -255,36 +283,15 @@ document.getElementById("musicBtn").onclick=()=>{
 
 function openFlowers(){
   showSlide('flowers');
-  for(let i=0;i<40;i++){
+  for(let i=0;i<50;i++){
     let p=document.createElement('div');
     p.className='petal';
     p.style.left=Math.random()*100+'vw';
-    p.style.animationDuration=5+Math.random()*5+'s';
+    p.style.animationDuration=10+Math.random()*8+'s';
     document.body.appendChild(p);
+    setTimeout(()=>p.remove(),20000);
   }
 }
-
-function hearts(){
-  for(let i=0;i<25;i++){
-    let h=document.createElement("div");
-    h.innerText="❤️";
-    h.style.position="fixed";
-    h.style.left=Math.random()*100+"vw";
-    h.style.top="-20px";
-    h.style.fontSize="20px";
-    h.style.animation="fall 4s linear";
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),4000);
-  }
-} 
-
-/* SWIPE */
-let startX=0;
-document.addEventListener("touchstart",e=>startX=e.touches[0].clientX);
-document.addEventListener("touchend",e=>{
-  let dx=e.changedTouches[0].clientX-startX;
-  if(dx>80) showSlide('menu');
-});
 </script>
 
 </body>
