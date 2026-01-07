@@ -2,62 +2,147 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For My Love ❤️</title>
+<title>For You ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif;}
-body{background:#000;color:#fff;overflow:hidden;}
-section{display:none;align-items:center;justify-content:center;flex-direction:column;height:100vh;width:100vw;position:absolute;top:0;left:0;}
-.show{display:flex;}
-.fade{animation:fade 1.2s ease;}
-@keyframes fade{from{opacity:0}to{opacity:1}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Poppins',sans-serif;
+  overflow:hidden;
+  background:#000;
+}
 
-button{padding:12px 24px;border:none;border-radius:30px;font-size:16px;cursor:pointer;background:#ff6fae;color:#fff;box-shadow:0 0 15px #ff6fae;}
+/* SLIDES */
+.slide{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:#000;
+  color:#fff;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 1s ease, transform 1s ease;
+}
+.slide.active{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateX(0);
+}
+.slide.left{transform:translateX(-40px)}
+.slide.right{transform:translateX(40px)}
 
-img{max-width:90%;border-radius:20px}
+/* BUTTON */
+.btn{
+  margin-top:30px;
+  padding:14px 32px;
+  border:none;
+  border-radius:40px;
+  font-size:16px;
+  background:#ff6f91;
+  color:#fff;
+  cursor:pointer;
+  box-shadow:0 10px 30px rgba(255,111,145,.4);
+}
 
 /* LOCK */
-#lock img{width:260px;margin-bottom:20px}
-#timer{font-size:22px;margin-top:10px}
+#lock img{width:260px;border-radius:24px}
+#timer{margin-top:15px;font-size:18px}
 
 /* MENU */
-.menu{display:grid;grid-template-columns:repeat(2,150px);gap:30px}
-.menu img{width:120px;cursor:pointer;transition:.3s}
-.menu img:hover{transform:scale(1.15)}
+#menu{
+  background:linear-gradient(135deg,#ffd1dc,#ffb6c1);
+  color:#222;
+}
+.menu{
+  display:grid;
+  grid-template-columns:repeat(2,180px);
+  gap:40px;
+  margin-top:40px;
+}
+.card{
+  background:rgba(255,255,255,.35);
+  backdrop-filter:blur(10px);
+  border-radius:26px;
+  padding:25px;
+  text-align:center;
+  cursor:pointer;
+  transition:.4s;
+}
+.card:hover{transform:scale(1.08)}
+.card img{width:90px;margin-bottom:12px}
+.card h3{font-weight:600}
 
 /* GALLERY */
-.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:20px;padding:20px}
-.gallery img{width:100%;cursor:pointer}
-.caption{margin-top:10px;font-size:16px;color:#ffd1e8}
+#gallery{background:#111}
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:20px;
+  padding:30px;
+}
+.gallery img{
+  width:100%;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.4s;
+}
+.gallery img:hover{transform:scale(1.05)}
+.caption{margin-top:15px;color:#ffd1dc}
+
+/* FLOWERS */
+#flowers{
+  background:#0d0d0d;
+  overflow:hidden;
+}
+.petal{
+  position:absolute;
+  width:20px;height:20px;
+  background:pink;
+  border-radius:50%;
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  from{transform:translateY(-50px)}
+  to{transform:translateY(110vh)}
+}
 
 /* LETTER */
 #letter{
-background:url("images/letter-bg.jpg") center/cover no-repeat;
-color:#3b2a1a;
-padding:40px;
-text-align:center;
+  background:url("images/letter-bg.jpg") center/cover no-repeat;
+  color:#3b2a1a;
 }
-#letter .paper{
-background:rgba(255,255,255,0.85);
-padding:30px;
-border-radius:20px;
-max-width:600px;
+.paper{
+  background:rgba(255,255,255,.85);
+  padding:40px;
+  border-radius:26px;
+  max-width:650px;
+  font-family:'Playfair Display',serif;
+  font-size:20px;
+  line-height:1.6;
 }
 
-/* FLOWERS */
-.petal{
-position:absolute;
-width:25px;
-height:25px;
-background:pink;
-border-radius:50%;
-opacity:.8;
-animation:fall linear infinite;
+/* VIDEO */
+#video video{
+  width:320px;
+  border-radius:20px;
+  box-shadow:0 20px 50px rgba(0,0,0,.6);
 }
-@keyframes fall{
-from{transform:translateY(-50px)}
-to{transform:translateY(110vh)}
+
+/* FINAL */
+#final{
+  background:linear-gradient(135deg,#ffb6c1,#ffd1dc);
+  color:#222;
+}
+#final img{
+  width:220px;
+  border-radius:20px;
+  margin:10px;
 }
 </style>
 </head>
@@ -65,118 +150,115 @@ to{transform:translateY(110vh)}
 <body>
 
 <!-- LOCK -->
-<section id="lock" class="show fade">
-<img src="images/cat-lock.jpg">
-<h2>Don’t you dare open 😾</h2>
-<div id="timer"></div>
-<button onclick="tryOpen()">OPEN</button>
-</section>
+<div class="slide active" id="lock">
+  <img src="images/cat-lock.jpg">
+  <h2>Don’t open yet 😾</h2>
+  <div id="timer"></div>
+  <button class="btn" onclick="attemptOpen()">Open</button>
+</div>
 
 <!-- WARNING -->
-<section id="warning" class="fade">
-<img src="images/cat-warning.jpg">
-<h2>HOW DARE YOU 😤</h2>
-<button onclick="backToLock()">Okay sorry</button>
-</section>
+<div class="slide left" id="warn">
+  <img src="images/cat-warning.jpg" style="width:240px;border-radius:20px">
+  <h2>How dare you 😤</h2>
+  <button class="btn" onclick="showSlide('lock')">Sorry</button>
+</div>
 
 <!-- MENU -->
-<section id="menu" class="fade">
-<h2>I’ve got something for you 💖</h2>
-<div class="menu">
-<img src="images/photo1.jpg" onclick="openGallery()">
-<img src="images/flower-logo.jpg" onclick="openFlowers()">
-<img src="images/letter-bg.jpg" onclick="openLetter()">
-<img src="images/photo2.jpg" onclick="openVideo()">
+<div class="slide right" id="menu">
+  <h1>I’ve got something for you 💖</h1>
+  <div class="menu">
+    <div class="card" onclick="showSlide('gallery')">
+      <img src="images/photo1.jpg"><h3>Photos</h3>
+    </div>
+    <div class="card" onclick="openFlowers()">
+      <img src="images/flower-logo.jpg"><h3>Flowers</h3>
+    </div>
+    <div class="card" onclick="showSlide('letter')">
+      <img src="images/letter-bg.jpg"><h3>Letter</h3>
+    </div>
+    <div class="card" onclick="showSlide('video')">
+      <img src="images/photo2.jpg"><h3>Video</h3>
+    </div>
+  </div>
 </div>
-</section>
 
 <!-- GALLERY -->
-<section id="gallery" class="fade">
-<div class="gallery">
-<img src="images/photo1.jpg" onclick="showCaption('My favourite smile ❤️')">
-<img src="images/photo2.jpg" onclick="showCaption('You make my world soft 💕')">
-<img src="images/photo3.jpg" onclick="showCaption('Forever my person 🫶')">
-<img src="images/photo4.jpg" onclick="showCaption('I love us 🥺')">
+<div class="slide left" id="gallery">
+  <div class="gallery">
+    <img src="images/photo1.jpg" onclick="cap('My favourite smile ❤️')">
+    <img src="images/photo2.jpg" onclick="cap('My comfort 💕')">
+    <img src="images/photo3.jpg" onclick="cap('My person 🫶')">
+    <img src="images/photo4.jpg" onclick="cap('Always us 🥺')">
+  </div>
+  <div class="caption" id="cap"></div>
+  <button class="btn" onclick="showSlide('menu')">Back</button>
 </div>
-<div class="caption" id="caption"></div>
-<button onclick="goMenu()">Back</button>
-</section>
 
 <!-- FLOWERS -->
-<section id="flowers" class="fade">
-<h2>These will never die 🌸</h2>
-<button onclick="goMenu()">Back</button>
-</section>
+<div class="slide right" id="flowers">
+  <h2>Flowers just for you 🌸</h2>
+  <button class="btn" onclick="showSlide('menu')">Back</button>
+</div>
 
 <!-- LETTER -->
-<section id="letter" class="fade">
-<div class="paper">
-<h2>My Love 💌</h2>
-<p>
-One year with you felt like a heartbeat and a lifetime together.<br><br>
-You are my calm, my chaos, my comfort and my courage.<br>
-No matter where life takes us, I choose you — again and again.<br><br>
-Happy Anniversary ❤️
-</p>
+<div class="slide left" id="letter">
+  <div class="paper">
+    One year with you felt like a heartbeat and a lifetime.<br><br>
+    You are my calm, my chaos, my comfort and my home.<br>
+    I choose you — always. ❤️
+  </div>
+  <button class="btn" onclick="showSlide('menu')">Back</button>
 </div>
-<button onclick="goMenu()">Back</button>
-</section>
 
 <!-- VIDEO -->
-<section id="video" class="fade">
-<video controls width="300">
-<source src="images/video.mp4" type="video/mp4">
-</video>
-<button onclick="finalSlide()">Next</button>
-</section>
+<div class="slide right" id="video">
+  <video controls>
+    <source src="images/video.mp4" type="video/mp4">
+  </video>
+  <button class="btn" onclick="showSlide('final')">Next</button>
+</div>
 
 <!-- FINAL -->
-<section id="final" class="fade">
-<img src="images/photo-last-1.jpg">
-<img src="images/photo-last-2.jpg">
-<h1>Love you fodu ❤️</h1>
-</section>
+<div class="slide left" id="final">
+  <img src="images/photo-last-1.jpg">
+  <img src="images/photo-last-2.jpg">
+  <h1>Love you fodu ❤️</h1>
+</div>
 
 <script>
-const unlockDate = new Date().getTime(); // TESTING (change later)
+const unlockDate = new Date().getTime(); // TEST MODE
 
-function updateTimer(){
-const now = new Date().getTime();
-const diff = unlockDate - now;
-document.getElementById("timer").innerText =
-diff<=0 ? "Unlocked ❤️" : Math.ceil(diff/1000)+" seconds";
+function attemptOpen(){
+  if(Date.now()<unlockDate) showSlide('warn');
+  else showSlide('menu');
 }
-setInterval(updateTimer,1000);
 
-function tryOpen(){
-if(new Date().getTime()<unlockDate){
-show("warning");
-}else{
-show("menu");
+function showSlide(id){
+  document.querySelectorAll('.slide').forEach(s=>{
+    s.classList.remove('active')
+  });
+  document.getElementById(id).classList.add('active');
 }
-}
-function backToLock(){show("lock")}
-function openGallery(){show("gallery")}
+
+function cap(t){document.getElementById('cap').innerText=t}
+
 function openFlowers(){
-show("flowers");
-for(let i=0;i<25;i++){
-let p=document.createElement("div");
-p.className="petal";
-p.style.left=Math.random()*100+"vw";
-p.style.animationDuration=5+Math.random()*5+"s";
-document.body.appendChild(p);
+  showSlide('flowers');
+  for(let i=0;i<30;i++){
+    let p=document.createElement('div');
+    p.className='petal';
+    p.style.left=Math.random()*100+'vw';
+    p.style.animationDuration=5+Math.random()*6+'s';
+    document.body.appendChild(p);
+  }
 }
-}
-function openLetter(){show("letter")}
-function openVideo(){show("video")}
-function finalSlide(){show("final")}
-function goMenu(){show("menu")}
-function showCaption(t){document.getElementById("caption").innerText=t}
 
-function show(id){
-document.querySelectorAll("section").forEach(s=>s.style.display="none");
-document.getElementById(id).style.display="flex";
-}
+setInterval(()=>{
+  let diff=unlockDate-Date.now();
+  document.getElementById('timer').innerText=
+    diff<=0?'Unlocked ❤️':Math.ceil(diff/1000)+' sec';
+},1000);
 </script>
 
 </body>
